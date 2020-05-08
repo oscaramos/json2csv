@@ -1,5 +1,5 @@
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import UploadButton from "../../UploadButton";
+import UploadButton from "../upload-button/UploadButton";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 

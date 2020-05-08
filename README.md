@@ -26,7 +26,7 @@ to generate CSV for the header and data rows.
 -   [x] User can paste JSON syntax into a text box
 -   [x] User can click a 'Convert' button to validate the JSON text box and convert it to CSV
 -   [x] User can see the converted CSV in another text box
--   [ ] User can see an warning message if the JSON text box is empty or if it doesn't contain valid JSON
+-   [x] User can see an warning message if the JSON text box is empty or if it doesn't contain valid JSON
 -   [ ] User can click a 'Clear' button to clear the contents of both the JSON and CSV text boxes.
 
 ## Bonus features
