@@ -5,7 +5,7 @@ import JsonContainer from "../json-container/JSONContainer";
 import ConvertButton from "../convert-button/ConvertButton";
 import CSVContainer from "../csv-container/CSVContainer";
 
-export const FormContainer = ({state, onChangeForm, onConvertClick}) => (
+export const FormContainer = ({ state, onChangeForm, onConvertClick, onClear }) => (
   <Grid container justify='center' alignItems='center'
         style={{ minHeight: "100vh" }}>
     <Grid item xs={6}>
@@ -18,7 +18,7 @@ export const FormContainer = ({state, onChangeForm, onConvertClick}) => (
             <ConvertButton onClick={onConvertClick} />
           </Grid>
           <Grid item xs={5}>
-            <CSVContainer value={state.csv} onChangeForm={onChangeForm} />
+            <CSVContainer value={state.csv} onChangeForm={onChangeForm} onClear={onClear}/>
           </Grid>
         </Grid>
       </Paper>

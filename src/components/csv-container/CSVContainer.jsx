@@ -6,12 +6,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 
-const CSVContainer = props => (
+const CSVContainer = ({ value, onChangeForm, onClear}) => (
   <Grid container spacing={2}>
     <Grid item xs={12}>
       <Grid container justify='center'>
         <TextareaAutosize aria-label='empty textarea' placeholder='CSV' rowsMin={20} style={{ width: '30vh' }}
-                          value={props.value} onChange={props.onChangeForm} name='csv' />
+                          value={value} onChange={onChangeForm} name='csv' />
       </Grid>
     </Grid>
     <Grid item xs={12}>
@@ -20,15 +20,15 @@ const CSVContainer = props => (
           <DownloadIcon />
         </IconButton>
 
-      <IconButton aria-label='copy-clipboard'>
-        <FileCopyIcon />
-      </IconButton>
+        <IconButton aria-label='copy-clipboard'>
+          <FileCopyIcon />
+        </IconButton>
 
-      <IconButton aria-label='delete'>
-        <DeleteIcon />
-      </IconButton>
+        <IconButton aria-label='delete'>
+          <DeleteIcon onClick={onClear}/>
+        </IconButton>
+      </Grid>
     </Grid>
-  </Grid>
-</Grid>);
+  </Grid>);
 
 export default CSVContainer;
