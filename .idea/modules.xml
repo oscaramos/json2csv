@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dollar-to-cents.iml" filepath="$PROJECT_DIR$/.idea/dollar-to-cents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/json2csv.iml" filepath="$PROJECT_DIR$/.idea/json2csv.iml" />
     </modules>
   </component>
 </project>

@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
+import FormContainer from "./components/form-container/FormContainer";
+import json2csv from "./components/json2csv/json2csv.component";
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    json: '{"a":"A","b":"B","c":"C"}',
+    csv: ''
+  }
+
+  onJSON2CSV = () => {
+    this.setState({csv: json2csv(this.state.json)})
+  }
+
+  onChangeForm = e => {
+    this.setState({[e.target.name]: e.target.value});
+  };
+
+  render() {
+    return (
+      <FormContainer state={this.state} onChangeForm={this.onChangeForm} onConvertClick={this.onJSON2CSV} />
+    );
+  }
 }
 
 export default App;
