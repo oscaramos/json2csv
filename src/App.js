@@ -5,7 +5,7 @@ import './App.css';
 
 class App extends React.Component {
   state = {
-    json: '{"a":"A","b":"B","c":"C"}',
+    json: JSON.stringify({ a: "A", b: "B", c: "C" }, null, 4),
     csv: '',
     error: ''
   }
@@ -14,7 +14,7 @@ class App extends React.Component {
     try {
       this.setState({ csv: json2csv(this.state.json) })
     } catch (e) {
-      this.setState({error: 'Cant convert Json2Csv'});
+      this.setState({ error: 'Cant convert Json2Csv' });
     }
   }
 
