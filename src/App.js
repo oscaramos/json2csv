@@ -8,6 +8,7 @@ class App extends React.Component {
   state = {
     json: '{"a":"A","b":"B","c":"C"}',
     csv: '',
+    open: false
   }
 
   onJSON2CSV = () => {
@@ -33,10 +34,14 @@ class App extends React.Component {
     });
   }
 
+  onInputFile = (content) => {
+    this.setState({ json: content });
+  }
+
   render() {
     return (
       <div>
-        <FormContainer state={this.state} onChangeForm={this.onChangeForm} onConvertClick={this.onJSON2CSV} onClear={this.onClear}/>
+        <FormContainer state={this.state} onChangeForm={this.onChangeForm} onConvertClick={this.onJSON2CSV} onClear={this.onClear} onInputFile={this.onInputFile}/>
         <ErrorModal open={this.state.open} handleClose={this.handleClose} errormsg="Invalid JSON"/>
       </div>
     );

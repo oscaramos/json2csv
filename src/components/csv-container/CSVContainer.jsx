@@ -24,8 +24,8 @@ const CSVContainer = ({ value, onChangeForm, onClear}) => (
           <FileCopyIcon />
         </IconButton>
 
-        <IconButton aria-label='delete'>
-          <DeleteIcon onClick={onClear}/>
+        <IconButton aria-label='delete' onClick={onClear}>
+          <DeleteIcon />
         </IconButton>
       </Grid>
     </Grid>
