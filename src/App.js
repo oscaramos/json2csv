@@ -15,10 +15,10 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import SaveIcon from '@material-ui/icons/Save'
-import PublishIcon from '@material-ui/icons/Publish';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { ReactComponent as ClipboardIcon } from './assets/clipboard.svg';
+import PublishIcon from '@material-ui/icons/Publish'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import { ReactComponent as ClipboardIcon } from './assets/clipboard.svg'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +44,7 @@ const getJsonInternal = (json) => {
 
 const App = () => {
 	const classes = useStyles()
-	const [jsonToCsv, setJsonToCsv] = useState(true);
+	const [jsonToCsv, setJsonToCsv] = useState(true)
 
 	const [json, setJson] = useState('')
 	const [csv, setCsv] = useState('')
@@ -52,7 +52,7 @@ const App = () => {
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
 
-	const [openTooltip, setOpenTooltip] = useState(false);
+	const [openTooltip, setOpenTooltip] = useState(false)
 
 	useEffect(() => {
 		json2csvAsync(getJsonInternal(json))
@@ -86,10 +86,10 @@ const App = () => {
 	const handleClear = () => {
 		setJson('')
 		setCsv('')
-	};
+	}
 
 	const handleDownloadCsv = () => {
-		fileDownload(csv, 'json_converted.csv');
+		fileDownload(csv, 'json_converted.csv')
 	}
 
 	const handleCopyClipboard = () => {
@@ -107,6 +107,7 @@ const App = () => {
 											placeholder='JSON'
 											onChange={newval => setJson(newval)}
 											value={json}
+											style={{ borderRadius: '5px' }}
 							/>
 						</Grid>
 
@@ -126,13 +127,13 @@ const App = () => {
 					<Grid container alignItems='center' style={{ height: '100%' }}>
 						<div>
 							{
-								jsonToCsv?
+								jsonToCsv ?
 									<Button variant='contained' color='primary'
 													endIcon={<ArrowForwardIcon />}
 													onClick={() => setJsonToCsv(false)}>
 										To
 									</Button>
-								:
+									:
 									<Button variant='contained' color='primary'
 													startIcon={<ArrowBackIcon />}
 													onClick={() => setJsonToCsv(true)}>
@@ -149,6 +150,7 @@ const App = () => {
 						<Grid item className={classes.editor}>
 							<Editor value={csv}
 											placeholder='CSV'
+											style={{ borderRadius: '5px' }}
 							/>
 						</Grid>
 
@@ -156,7 +158,7 @@ const App = () => {
 							<Grid container spacing={2} justify='space-between'>
 								<Grid item>
 									<Button
-										variant="contained" color="primary" size="large"
+										variant='contained' color='primary' size='large'
 										startIcon={<DeleteIcon />}
 										onClick={handleClear}
 									>
@@ -166,7 +168,7 @@ const App = () => {
 
 								<Grid item>
 									<Button
-										variant="contained" color="primary" size="large"
+										variant='contained' color='primary' size='large'
 										startIcon={<SaveIcon />}
 										onClick={handleDownloadCsv}
 									>
@@ -177,9 +179,9 @@ const App = () => {
 								<Grid item>
 									<CopyToClipboard text={csv}
 																	 onCopy={handleCopyClipboard}>
-										<Tooltip open={openTooltip} onClose={() => setOpenTooltip(false)} title="Copied" arrow>
+										<Tooltip open={openTooltip} onClose={() => setOpenTooltip(false)} title='Copied' arrow>
 											<Button
-												variant="contained" color="primary" size="large"
+												variant='contained' color='primary' size='large'
 												startIcon={<ClipboardIcon />}
 											>
 												Copy
