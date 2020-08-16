@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { json2csvAsync } from 'json-2-csv'
+import fileDownload from 'js-file-download'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Editor } from './components/Editor/Editor'
@@ -12,8 +13,10 @@ import ReactFileReader from 'react-file-reader'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import SaveIcon from '@material-ui/icons/Save'
+import { ReactComponent as ClipboardIcon } from './assets/clipboard.svg';
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import Tooltip from '@material-ui/core/Tooltip'
 
-import fileDownload from 'js-file-download'
 
 const useStyles = makeStyles((theme) => ({
 	editor: {
@@ -44,6 +47,8 @@ const App = () => {
 
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
+
+	const [openTooltip, setOpenTooltip] = useState(false);
 
 	useEffect(() => {
 		json2csvAsync(getJsonInternal(json))
@@ -81,6 +86,10 @@ const App = () => {
 
 	const handleDownloadCsv = () => {
 		fileDownload(csv, 'json_converted.csv');
+	}
+
+	const handleCopyClipboard = () => {
+		setOpenTooltip(true)
 	}
 
 	return (
@@ -128,7 +137,7 @@ const App = () => {
 						</Grid>
 
 						<Grid item>
-							<Grid container spacing={2}>
+							<Grid container spacing={2} justify='space-between'>
 								<Grid item>
 									<Button
 										variant="contained"
@@ -151,6 +160,22 @@ const App = () => {
 									>
 										Save
 									</Button>
+								</Grid>
+
+								<Grid item>
+									<CopyToClipboard text={csv}
+																	 onCopy={handleCopyClipboard}>
+										<Tooltip open={openTooltip} onClose={() => setOpenTooltip(false)} title="Copied" arrow>
+											<Button
+												variant="contained"
+												color="primary"
+												size="large"
+												startIcon={<ClipboardIcon color="#fff" />}
+											>
+												Copy
+											</Button>
+										</Tooltip>
+									</CopyToClipboard>
 								</Grid>
 							</Grid>
 						</Grid>
