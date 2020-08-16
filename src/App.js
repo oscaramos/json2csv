@@ -99,7 +99,14 @@ const App = () => {
 		const reader = new FileReader()
 		reader.onload = async (e) => {
 			const text = e.target.result
-			setJson(text)
+
+			if (isJsonToCsv) {
+				setJson(text)
+			} else {
+				// Removes file endline
+				const newText = text.replace(/\r/g, '')
+				setCsv(newText)
+			}
 		}
 		reader.readAsText(files[0])
 	}
@@ -109,8 +116,12 @@ const App = () => {
 		setCsv('')
 	}
 
-	const handleDownloadCsv = () => {
-		fileDownload(csv, 'json_converted.csv')
+	const handleDownloadFile = () => {
+		if (isJsonToCsv) {
+			fileDownload(csv, 'json_converted.csv')
+		} else {
+			fileDownload(json, 'csv_converted.json')
+		}
 	}
 
 	const handleCopyClipboard = () => {
@@ -133,7 +144,7 @@ const App = () => {
 						</Grid>
 
 						<Grid item>
-							<ReactFileReader fileTypes={['.json']} handleFiles={handleFiles}>
+							<ReactFileReader fileTypes={isJsonToCsv? ['.json']: ['.csv']} handleFiles={handleFiles}>
 								<Button variant='contained' color='primary' fullWidth
 												startIcon={<PublishIcon />}>
 									Upload File
@@ -192,14 +203,14 @@ const App = () => {
 									<Button
 										variant='contained' color='primary' size='large'
 										startIcon={<SaveIcon />}
-										onClick={handleDownloadCsv}
+										onClick={handleDownloadFile}
 									>
 										Save
 									</Button>
 								</Grid>
 
 								<Grid item>
-									<CopyToClipboard text={csv}
+									<CopyToClipboard text={isJsonToCsv? csv: json}
 																	 onCopy={handleCopyClipboard}>
 										<Tooltip open={openTooltip} onClose={() => setOpenTooltip(false)} title='Copied' arrow>
 											<Button
