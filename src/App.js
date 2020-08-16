@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-function SourceToolbar({ isJsonToCsv, handleReadFiles }) {
+function SourceToolbar({ getFileTypes, handleReadFiles }) {
 	return (
-		<ReactFileReader fileTypes={isJsonToCsv ? ['.json'] : ['.csv']} handleFiles={handleReadFiles}>
+		<ReactFileReader fileTypes={getFileTypes()} handleFiles={handleReadFiles}>
 			<Button variant='contained' color='primary' fullWidth startIcon={<PublishIcon />}>
 				Upload File
 			</Button>
@@ -79,7 +79,7 @@ function TargetToolbar({ textToClipboard, handleClear, handleDownloadFile }) {
 			</Grid>
 
 			<Grid item>
-				<CopyToClipboard text={(textToClipboard)()}
+				<CopyToClipboard text={textToClipboard()}
 												 onCopy={handleCopyClipboard}>
 					<Tooltip open={openTooltip} onClose={handleCloseTooltip} title='Copied' arrow>
 						<Button
@@ -97,7 +97,7 @@ function TargetToolbar({ textToClipboard, handleClear, handleDownloadFile }) {
 
 function ToolbarSwitchable(props) {
 	if (props.switch) {
-		return <SourceToolbar isJsonToCsv={props.isJsonToCsv}
+		return <SourceToolbar getFileTypes={props.getFileTypes}
 													handleReadFiles={props.handleReadFiles}
 		/>
 	} else {
@@ -200,6 +200,10 @@ function App() {
 		return isJsonToCsv ? csv : json
 	}
 
+	const getFileTypes = () => {
+		return isJsonToCsv ? ['.json'] : ['.csv']
+	}
+
 	return (
 		<Container maxWidth='md' className={classes.container}>
 			<Grid container alignItems='center' spacing={2}>
@@ -217,7 +221,7 @@ function App() {
 
 						<Grid item>
 							<ToolbarSwitchable switch={isJsonToCsv}
-																 isJsonToCsv={isJsonToCsv}
+																 getFileTypes={getFileTypes}
 																 handleReadFiles={handleReadFiles}
 																 handleClear={handleClear}
 																 handleDownloadFile={handleDownloadFile}
@@ -263,7 +267,7 @@ function App() {
 						<Grid item>
 							<Grid item>
 								<ToolbarSwitchable switch={!isJsonToCsv}
-																	 isJsonToCsv={isJsonToCsv}
+																	 getFileTypes={getFileTypes}
 																	 handleReadFiles={handleReadFiles}
 																	 handleClear={handleClear}
 																	 handleDownloadFile={handleDownloadFile}
