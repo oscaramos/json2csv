@@ -1,8 +1,8 @@
 # JSON2CSV and CSV2JSON
 
 ## Compare versions
-* [JSON2CSV](https://oscaramos.github.io/json2csv/) made in 9/5/2020
-* [JSON2CSV](https://json2csv.vercel.app/) made in 16/8/2020
+* [Old version](https://oscaramos.github.io/json2csv/) made in 9/5/2020
+* [Newer version](https://json2csv.vercel.app/) made in 16/8/2020
 
 **Tier:** 1-Beginner
 
