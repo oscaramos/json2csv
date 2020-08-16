@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { json2csvAsync } from 'json-2-csv'
+import { json2csvAsync, csv2jsonAsync } from 'json-2-csv'
 import fileDownload from 'js-file-download'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -44,7 +44,7 @@ const getJsonInternal = (json) => {
 
 const App = () => {
 	const classes = useStyles()
-	const [jsonToCsv, setJsonToCsv] = useState(true)
+	const [isJsonToCsv, setIsJsonToCsv] = useState(false)
 
 	const [json, setJson] = useState('')
 	const [csv, setCsv] = useState('')
@@ -55,20 +55,40 @@ const App = () => {
 	const [openTooltip, setOpenTooltip] = useState(false)
 
 	useEffect(() => {
-		json2csvAsync(getJsonInternal(json))
-			.then(csv => {
-				setCsv(csv)
-				setOpen(false)
-			})
-			.catch(() => {
-				setOpen(true)
-				if (json.length === 0) {
-					setMessage('Input is empty')
-				} else {
-					setMessage('Invalid JSON')
-				}
-			})
-	}, [json])
+		if (isJsonToCsv) {
+			json2csvAsync(getJsonInternal(json))
+				.then(csv => {
+					setCsv(csv)
+					setOpen(false)
+				})
+				.catch(() => {
+					setOpen(true)
+					if (json.length === 0) {
+						setMessage('Input is empty')
+					} else {
+						setMessage('Invalid JSON')
+					}
+				})
+		}
+	}, [json, isJsonToCsv])
+
+	useEffect(() => {
+		if (!isJsonToCsv) {
+			csv2jsonAsync(csv)
+				.then(json => {
+					setJson(JSON.stringify(json, null, 4))
+					setOpen(false)
+				})
+				.catch(() => {
+					setOpen(true)
+					if (csv.length === 0) {
+						setMessage('Input is empty')
+					} else {
+						setMessage('Invalid CSV')
+					}
+				})
+		}
+	}, [csv, isJsonToCsv])
 
 	const handleClose = () => {
 		setOpen(false)
@@ -127,16 +147,16 @@ const App = () => {
 					<Grid container alignItems='center' style={{ height: '100%' }}>
 						<div>
 							{
-								jsonToCsv ?
+								isJsonToCsv ?
 									<Button variant='contained' color='primary'
 													endIcon={<ArrowForwardIcon />}
-													onClick={() => setJsonToCsv(false)}>
+													onClick={() => setIsJsonToCsv(false)}>
 										To
 									</Button>
 									:
 									<Button variant='contained' color='primary'
 													startIcon={<ArrowBackIcon />}
-													onClick={() => setJsonToCsv(true)}>
+													onClick={() => setIsJsonToCsv(true)}>
 										To
 									</Button>
 							}
@@ -148,8 +168,9 @@ const App = () => {
 				<Grid item>
 					<Grid container direction='column' spacing={1}>
 						<Grid item className={classes.editor}>
-							<Editor value={csv}
-											placeholder='CSV'
+							<Editor placeholder='CSV'
+											value={csv}
+											onChange={newval => setCsv(newval)}
 											style={{ borderRadius: '5px' }}
 							/>
 						</Grid>
