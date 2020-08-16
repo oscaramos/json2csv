@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { json2csvAsync } from 'json-2-csv'
 import fileDownload from 'js-file-download'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Editor } from './components/Editor/Editor'
@@ -10,12 +11,12 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 import ReactFileReader from 'react-file-reader'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import SaveIcon from '@material-ui/icons/Save'
+import PublishIcon from '@material-ui/icons/Publish';
 import { ReactComponent as ClipboardIcon } from './assets/clipboard.svg';
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import Tooltip from '@material-ui/core/Tooltip'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +95,7 @@ const App = () => {
 
 	return (
 		<Container maxWidth='md' className={classes.container}>
-			<Grid container alignItems='center'>
+			<Grid container alignItems='center' spacing={2}>
 				{/*----- JSON ------*/}
 				<Grid item>
 					<Grid container direction='column' spacing={1}>
@@ -108,7 +109,8 @@ const App = () => {
 
 						<Grid item>
 							<ReactFileReader fileTypes={['.json']} handleFiles={handleFiles}>
-								<Button variant='contained' color='primary' component='span' fullWidth>
+								<Button variant='contained' color='primary' fullWidth
+												startIcon={<PublishIcon />}>
 									Upload File
 								</Button>
 							</ReactFileReader>
@@ -140,9 +142,7 @@ const App = () => {
 							<Grid container spacing={2} justify='space-between'>
 								<Grid item>
 									<Button
-										variant="contained"
-										color="primary"
-										size="large"
+										variant="contained" color="primary" size="large"
 										startIcon={<DeleteIcon />}
 										onClick={handleClear}
 									>
@@ -152,9 +152,7 @@ const App = () => {
 
 								<Grid item>
 									<Button
-										variant="contained"
-										color="primary"
-										size="large"
+										variant="contained" color="primary" size="large"
 										startIcon={<SaveIcon />}
 										onClick={handleDownloadCsv}
 									>
@@ -167,10 +165,8 @@ const App = () => {
 																	 onCopy={handleCopyClipboard}>
 										<Tooltip open={openTooltip} onClose={() => setOpenTooltip(false)} title="Copied" arrow>
 											<Button
-												variant="contained"
-												color="primary"
-												size="large"
-												startIcon={<ClipboardIcon color="#fff" />}
+												variant="contained" color="primary" size="large"
+												startIcon={<ClipboardIcon />}
 											>
 												Copy
 											</Button>
