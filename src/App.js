@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { json2csvAsync, csv2jsonAsync } from 'json-2-csv'
+import { csv2jsonAsync, json2csvAsync } from 'json-2-csv'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import fileDownload from 'js-file-download'
 import ReactFileReader from 'react-file-reader'
@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-function SourceToolbar({ jsonToCsv, handleReadFiles }) {
+function SourceToolbar({ isJsonToCsv, handleReadFiles }) {
 	return (
-		<ReactFileReader fileTypes={jsonToCsv ? ['.json'] : ['.csv']} handleFiles={handleReadFiles}>
+		<ReactFileReader fileTypes={isJsonToCsv ? ['.json'] : ['.csv']} handleFiles={handleReadFiles}>
 			<Button variant='contained' color='primary' fullWidth startIcon={<PublishIcon />}>
 				Upload File
 			</Button>
@@ -45,7 +45,7 @@ function SourceToolbar({ jsonToCsv, handleReadFiles }) {
 	)
 }
 
-function TargetToolbar(props) {
+function TargetToolbar({ textToClipboard, handleClear, handleDownloadFile }) {
 	const [openTooltip, setOpenTooltip] = useState(false)
 
 	const handleCopyClipboard = () => {
@@ -62,7 +62,7 @@ function TargetToolbar(props) {
 				<Button
 					variant='contained' color='primary' size='large'
 					startIcon={<DeleteIcon />}
-					onClick={props.handleClear}
+					onClick={handleClear}
 				>
 					Clear
 				</Button>
@@ -72,14 +72,14 @@ function TargetToolbar(props) {
 				<Button
 					variant='contained' color='primary' size='large'
 					startIcon={<SaveIcon />}
-					onClick={props.handleDownloadFile}
+					onClick={handleDownloadFile}
 				>
 					Save
 				</Button>
 			</Grid>
 
 			<Grid item>
-				<CopyToClipboard text={props.jsonToCsv ? props.csv : props.json}
+				<CopyToClipboard text={(textToClipboard)()}
 												 onCopy={handleCopyClipboard}>
 					<Tooltip open={openTooltip} onClose={handleCloseTooltip} title='Copied' arrow>
 						<Button
@@ -97,13 +97,13 @@ function TargetToolbar(props) {
 
 function ToolbarSwitchable(props) {
 	if (props.switch) {
-		return <SourceToolbar jsonToCsv={props.jsonToCsv} handleReadFiles={props.handleReadFiles} />
+		return <SourceToolbar isJsonToCsv={props.isJsonToCsv}
+													handleReadFiles={props.handleReadFiles}
+		/>
 	} else {
-		return <TargetToolbar csv={props.csv}
-													json={props.json}
-													handleClear={props.handleClear}
+		return <TargetToolbar handleClear={props.handleClear}
 													handleDownloadFile={props.handleDownloadFile}
-													jsonToCsv={props.jsonToCsv}
+													textToClipboard={props.textToClipboard}
 		/>
 	}
 }
@@ -196,6 +196,10 @@ function App() {
 		}
 	}
 
+	const textToClipboard = () => {
+		return isJsonToCsv ? csv : json
+	}
+
 	return (
 		<Container maxWidth='md' className={classes.container}>
 			<Grid container alignItems='center' spacing={2}>
@@ -213,11 +217,11 @@ function App() {
 
 						<Grid item>
 							<ToolbarSwitchable switch={isJsonToCsv}
-																 csv={csv}
-																 json={json}
+																 isJsonToCsv={isJsonToCsv}
 																 handleReadFiles={handleReadFiles}
 																 handleClear={handleClear}
 																 handleDownloadFile={handleDownloadFile}
+																 textToClipboard={textToClipboard}
 							/>
 						</Grid>
 					</Grid>
@@ -259,11 +263,11 @@ function App() {
 						<Grid item>
 							<Grid item>
 								<ToolbarSwitchable switch={!isJsonToCsv}
-																	 csv={csv}
-																	 json={json}
+																	 isJsonToCsv={isJsonToCsv}
 																	 handleReadFiles={handleReadFiles}
 																	 handleClear={handleClear}
 																	 handleDownloadFile={handleDownloadFile}
+																	 textToClipboard={textToClipboard}
 								/>
 							</Grid>
 						</Grid>
