@@ -10,7 +10,7 @@ export const Editor = ({ onChange, defaultValue, ...props }) => {
 		theme='monokai'
 		onChange={onChange}
 		showPrintMargin={false}
-		showGutter={true}
+		showGutter={false}
 		highlightActiveLine={true}
 		setOptions={{
 			enableBasicAutocompletion: false,
