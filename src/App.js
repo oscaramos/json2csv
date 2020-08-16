@@ -10,7 +10,8 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Alert from '@material-ui/lab/Alert'
-import { makeStyles } from '@material-ui/core/styles'
+import { useMediaQuery } from '@material-ui/core'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 
 import { Editor } from './components/Editor/Editor'
 
@@ -126,6 +127,8 @@ function App() {
 
 	const [open, setOpen] = useState(false)
 	const [message, setMessage] = useState('')
+	const theme = useTheme()
+	const matchesSM = useMediaQuery(theme.breakpoints.down("sm"))
 
 	useEffect(() => {
 		if (isJsonToCsv) {
@@ -206,7 +209,11 @@ function App() {
 
 	return (
 		<Container maxWidth='md' className={classes.container}>
-			<Grid container alignItems='center' spacing={2}>
+			<Grid container
+						alignItems='center'
+						direction={matchesSM ? 'column' : 'row'}
+						spacing={matchesSM ? 4: 2}
+			>
 				{/*----- JSON ------*/}
 				<Grid item>
 					<Grid container direction='column' spacing={1}>
