@@ -16,6 +16,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
 import SaveIcon from '@material-ui/icons/Save'
 import PublishIcon from '@material-ui/icons/Publish';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { ReactComponent as ClipboardIcon } from './assets/clipboard.svg';
 
 
@@ -42,6 +44,7 @@ const getJsonInternal = (json) => {
 
 const App = () => {
 	const classes = useStyles()
+	const [jsonToCsv, setJsonToCsv] = useState(true);
 
 	const [json, setJson] = useState('')
 	const [csv, setCsv] = useState('')
@@ -122,9 +125,20 @@ const App = () => {
 				<Grid item>
 					<Grid container alignItems='center' style={{ height: '100%' }}>
 						<div>
-							<Button variant='contained' color='primary'>
-								reverse
-							</Button>
+							{
+								jsonToCsv?
+									<Button variant='contained' color='primary'
+													endIcon={<ArrowForwardIcon />}
+													onClick={() => setJsonToCsv(false)}>
+										To
+									</Button>
+								:
+									<Button variant='contained' color='primary'
+													startIcon={<ArrowBackIcon />}
+													onClick={() => setJsonToCsv(true)}>
+										To
+									</Button>
+							}
 						</div>
 					</Grid>
 				</Grid>
