@@ -74,6 +74,10 @@ const App = () => {
 		reader.readAsText(files[0])
 	}
 
+	const handleClear = () => {
+		setJson('')
+		setCsv('')
+	};
 
 	return (
 		<Container maxWidth='md' className={classes.container}>
@@ -118,7 +122,11 @@ const App = () => {
 							/>
 						</Grid>
 
-
+						<Grid item>
+							<IconButton aria-label="delete" onClick={handleClear}>
+								<DeleteIcon />
+							</IconButton>
+						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
