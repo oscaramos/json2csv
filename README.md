@@ -1,4 +1,4 @@
-# JSON2CSV
+# JSON2CSV and CSV2JSON
 
 **Tier:** 1-Beginner
 
@@ -37,7 +37,7 @@ to generate CSV for the header and data rows.
 -   [x] User can enter the path the CSV file is to be saved to in a text box
 -   [x] User can click a 'Save' button to save the CSV file to the local file system
 -   [x] User can see a warning message if the CSV text box is empty or if the save operation failed.
--   [ ] User can convert CSV data to JSON. See CSV2JSON from AppIdeas
+-   [x] User can convert CSV data to JSON. See CSV2JSON from AppIdeas
 
 ## Useful links and resources
 
