@@ -13,15 +13,11 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-const jsonDefaultValue = `{
-
-}`
-
 const getJsonInternal = (json) => {
 	try {
 		return [JSON.parse(json)]
 	} catch (e) {
-		return []
+		return undefined
 	}
 }
 
@@ -33,13 +29,13 @@ const App = () => {
 	useEffect(() => {
 		json2csvAsync(getJsonInternal(json))
 			.then(csv => {
+				console.log({csv})
 				setCsv(csv)
 			})
+			.catch(e => {
+				console.log('invalid json')
+			})
 	}, [json])
-
-	useEffect(() => {
-		setJson(jsonDefaultValue)
-	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<>
@@ -48,7 +44,6 @@ const App = () => {
 					<Editor mode='json'
 									placeholder='JSON'
 									onChange={newval => setJson(newval)}
-									defaultValue={jsonDefaultValue}
 									value={json}
 					/>
 				</Grid>
