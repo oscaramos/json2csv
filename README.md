@@ -58,3 +58,12 @@ project(s).
 
 - [JSON to CSV Converter](https://codepen.io/JFarrow/pen/umjGF)
 - [JSV Converter](https://gpaiva00.github.io/json-csv)
+
+# Examples
+## Old version
+
+![old_version](./resources/JSON2CSV_Old.gif)
+
+## New version
+
+![new_version](./resources/JSON2CSV_New.gif)
