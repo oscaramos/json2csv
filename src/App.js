@@ -9,10 +9,11 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 import ReactFileReader from 'react-file-reader'
-import IconButton from '@material-ui/core/IconButton'
 
 import DeleteIcon from '@material-ui/icons/Delete'
+import SaveIcon from '@material-ui/icons/Save'
 
+import fileDownload from 'js-file-download'
 
 const useStyles = makeStyles((theme) => ({
 	editor: {
@@ -64,7 +65,6 @@ const App = () => {
 		setOpen(false)
 	}
 
-
 	const handleFiles = files => {
 		const reader = new FileReader()
 		reader.onload = async (e) => {
@@ -79,6 +79,10 @@ const App = () => {
 		setCsv('')
 	};
 
+	const handleDownloadCsv = () => {
+		fileDownload(csv, 'json_converted.csv');
+	}
+
 	return (
 		<Container maxWidth='md' className={classes.container}>
 			<Grid container alignItems='center'>
@@ -92,6 +96,7 @@ const App = () => {
 											value={json}
 							/>
 						</Grid>
+
 						<Grid item>
 							<ReactFileReader fileTypes={['.json']} handleFiles={handleFiles}>
 								<Button variant='contained' color='primary' component='span' fullWidth>
@@ -123,9 +128,31 @@ const App = () => {
 						</Grid>
 
 						<Grid item>
-							<IconButton aria-label="delete" onClick={handleClear}>
-								<DeleteIcon />
-							</IconButton>
+							<Grid container spacing={2}>
+								<Grid item>
+									<Button
+										variant="contained"
+										color="primary"
+										size="large"
+										startIcon={<DeleteIcon />}
+										onClick={handleClear}
+									>
+										Delete
+									</Button>
+								</Grid>
+
+								<Grid item>
+									<Button
+										variant="contained"
+										color="primary"
+										size="large"
+										startIcon={<SaveIcon />}
+										onClick={handleDownloadCsv}
+									>
+										Save
+									</Button>
+								</Grid>
+							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
