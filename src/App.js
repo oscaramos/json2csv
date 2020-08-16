@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 const getJsonInternal = (json) => {
 	try {
-		return [JSON.parse(json)]
+		const parsed = JSON.parse(json)
+		return Array.isArray(parsed) ? parsed : [parsed]
 	} catch (e) {
 		return undefined
 	}
@@ -44,7 +45,7 @@ const getJsonInternal = (json) => {
 
 const App = () => {
 	const classes = useStyles()
-	const [isJsonToCsv, setIsJsonToCsv] = useState(false)
+	const [isJsonToCsv, setIsJsonToCsv] = useState(true)
 
 	const [json, setJson] = useState('')
 	const [csv, setCsv] = useState('')
