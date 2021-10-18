@@ -1,13 +1,13 @@
 import { createTheme } from "@material-ui/core/styles";
 
-const MuiManatee = "#8D99AE";
+const MuiWeldonBlue = "#7e93b3";
 const MuiImperialRed = "#EF233C";
 const MuiAliceBlue = "#edf2f4";
 
 export default createTheme({
   palette: {
     primary: {
-      main: MuiManatee,
+      main: MuiWeldonBlue,
     },
     secondary: {
       main: MuiImperialRed,
