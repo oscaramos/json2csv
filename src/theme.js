@@ -1,10 +1,10 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 const MuiManatee = "#8D99AE";
 const MuiImperialRed = "#EF233C";
 const MuiAliceBlue = "#edf2f4";
 
-export default createMuiTheme({
+export default createTheme({
   palette: {
     primary: {
       main: MuiManatee,
