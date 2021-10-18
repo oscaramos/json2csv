@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { csv2jsonAsync, json2csvAsync } from "json-2-csv";
 
 import Grid from "@material-ui/core/Grid";
-import Alert from "@material-ui/lab/Alert";
-import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
 import { useMediaQuery } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { Editor } from "./components/Editor";
-import { SourceToolbar } from "./components/SourceToolbar";
-import { TargetToolbar } from "./components/TargetToolbar";
+import { Toolbar } from "./components/Toolbar";
 
 const useStyles = makeStyles((theme) => ({
   editor: {
@@ -39,42 +33,48 @@ const getJsonInternal = (json) => {
 
 function App() {
   const classes = useStyles();
-  const [isJsonToCsv, setIsJsonToCsv] = useState(true);
 
-  const [json, setJson] = useState("");
-  const [csv, setCsv] = useState("");
+  const [json, setJsonProtected] = useState("");
+  const [csv, setCsvProtected] = useState("");
 
-  const [errorOpen, setErrorOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const changeIsForConversion = useRef(false);
+
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const setJson = (value) => {
+    setJsonProtected(value);
+    changeIsForConversion.current = false;
+  };
+
+  const setCsv = (value) => {
+    setCsvProtected(value);
+    changeIsForConversion.current = false;
+  };
+
   useEffect(() => {
+    if (changeIsForConversion.current) return;
+
     (async () => {
       try {
-        if (isJsonToCsv) {
-          const csv = await json2csvAsync(getJsonInternal(json));
-          setCsv(csv);
-        } else {
-          const json = await csv2jsonAsync(csv);
-          setJson(JSON.stringify(json, null, 4));
-        }
-
-        setErrorOpen(false);
-      } catch (e) {
-        setErrorOpen(true);
-        if (json.length === 0) {
-          setMessage("Input is empty");
-        } else {
-          setMessage("Invalid JSON");
-        }
-      }
+        const csv = await json2csvAsync(getJsonInternal(json));
+        setCsv(csv);
+        changeIsForConversion.current = true;
+      } catch (e) {}
     })();
-  }, [json, isJsonToCsv]);
+  }, [json]);
 
-  const handleClose = () => {
-    setErrorOpen(false);
-  };
+  useEffect(() => {
+    if (changeIsForConversion.current) return;
+
+    (async () => {
+      try {
+        const json = JSON.stringify(await csv2jsonAsync(csv), null, 4);
+        setJson(json);
+        changeIsForConversion.current = true;
+      } catch (e) {}
+    })();
+  }, [csv]);
 
   return (
     <Container maxWidth="md" className={classes.container}>
@@ -91,56 +91,27 @@ function App() {
               <Editor
                 mode="json"
                 placeholder="JSON"
-                onChange={(newval) => setJson(newval)}
+                onChange={(newJson) => {
+                  setJson(newJson);
+                }}
                 value={json}
                 style={{ borderRadius: "5px" }}
               />
             </Grid>
 
-            <Grid item>
-              {isJsonToCsv ? (
-                <SourceToolbar
-                  isJsonToCsv={isJsonToCsv}
-                  setJson={setJson}
-                  setCsv={setCsv}
-                />
-              ) : (
-                <TargetToolbar
-                  isJsonToCsv={isJsonToCsv}
-                  setJson={setJson}
-                  setCsv={setCsv}
-                  csv={csv}
-                  json={json}
-                />
-              )}
+            <Grid item style={{ marginTop: 16 }}>
+              <Toolbar
+                value={json}
+                extension=".json"
+                filenameWhenDownloading="output.json"
+                onClear={() => {
+                  setJson("");
+                }}
+                onReadFile={(text) => {
+                  setJson(text);
+                }}
+              />
             </Grid>
-          </Grid>
-        </Grid>
-
-        {/*----- Reverse button ------*/}
-        <Grid item>
-          <Grid container alignItems="center" style={{ height: "100%" }}>
-            <div>
-              {isJsonToCsv ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<ArrowForwardIcon />}
-                  onClick={() => setIsJsonToCsv(false)}
-                >
-                  To
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => setIsJsonToCsv(true)}
-                >
-                  To
-                </Button>
-              )}
-            </div>
           </Grid>
         </Grid>
 
@@ -151,45 +122,30 @@ function App() {
               <Editor
                 placeholder="CSV"
                 value={csv}
-                onChange={(newval) => setCsv(newval)}
+                onChange={(newCsv) => {
+                  setCsv(newCsv);
+                }}
                 style={{ borderRadius: "5px" }}
               />
             </Grid>
 
-            <Grid item>
-              <Grid item>
-                {!isJsonToCsv ? (
-                  <SourceToolbar
-                    isJsonToCsv={isJsonToCsv}
-                    setJson={setJson}
-                    setCsv={setCsv}
-                  />
-                ) : (
-                  <TargetToolbar
-                    isJsonToCsv={isJsonToCsv}
-                    setJson={setJson}
-                    setCsv={setCsv}
-                    csv={csv}
-                    json={json}
-                  />
-                )}
-              </Grid>
+            <Grid item style={{ marginTop: 16 }}>
+              <Toolbar
+                value={csv}
+                extension=".csv"
+                filenameWhenDownloading="output.csv"
+                onClear={() => {
+                  setCsv("");
+                }}
+                onReadFile={(text) => {
+                  const newText = text.replace(/\r/g, ""); // Removes file end-line
+                  setCsv(newText);
+                }}
+              />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-
-      {/*----- Error message ------*/}
-      <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity="error"
-          elevation={6}
-          variant="filled"
-        >
-          {message}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 }
