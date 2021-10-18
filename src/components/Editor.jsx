@@ -4,11 +4,10 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-monokai";
 
-export const Editor = ({ onChange, defaultValue, ...props }) => {
+export const Editor = (props) => {
   return (
     <AceEditor
       theme="monokai"
-      onChange={onChange}
       showPrintMargin={false}
       showGutter={false}
       highlightActiveLine={true}
