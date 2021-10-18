@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { csv2jsonAsync, json2csvAsync } from "json-2-csv";
 
 import Grid from "@material-ui/core/Grid";
-import { useMediaQuery } from "@material-ui/core";
+import { Typography, useMediaQuery } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
@@ -84,64 +84,74 @@ function App() {
         direction={matchesSM ? "column" : "row"}
         spacing={matchesSM ? 4 : 2}
       >
-        {/*----- JSON ------*/}
         <Grid item>
-          <Grid container direction="column" spacing={1}>
-            <Grid item className={classes.editor}>
-              <Editor
-                mode="json"
-                placeholder="JSON"
-                onChange={(newJson) => {
-                  setJson(newJson);
-                }}
-                value={json}
-                style={{ borderRadius: "5px" }}
-              />
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <Typography variant="h4">JSON</Typography>
             </Grid>
+            <Grid item container direction="column" spacing={1}>
+              <Grid item className={classes.editor}>
+                <Editor
+                  mode="json"
+                  placeholder="JSON"
+                  onChange={(newJson) => {
+                    setJson(newJson);
+                  }}
+                  value={json}
+                  style={{ borderRadius: "5px" }}
+                />
+              </Grid>
 
-            <Grid item style={{ marginTop: 16 }}>
-              <Toolbar
-                value={json}
-                extension=".json"
-                filenameWhenDownloading="output.json"
-                onClear={() => {
-                  setJson("");
-                }}
-                onReadFile={(text) => {
-                  setJson(text);
-                }}
-              />
+              <Grid item style={{ marginTop: 16 }}>
+                <Toolbar
+                  value={json}
+                  extension=".json"
+                  filenameWhenDownloading="output.json"
+                  onClear={() => {
+                    setJson("");
+                  }}
+                  onReadFile={(text) => {
+                    setJson(text);
+                  }}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
 
-        {/*----- CSV ------*/}
         <Grid item>
-          <Grid container direction="column" spacing={1}>
-            <Grid item className={classes.editor}>
-              <Editor
-                placeholder="CSV"
-                value={csv}
-                onChange={(newCsv) => {
-                  setCsv(newCsv);
-                }}
-                style={{ borderRadius: "5px" }}
-              />
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <Typography variant="h4">CSV</Typography>
             </Grid>
+            <Grid item>
+              <Grid container direction="column" spacing={1}>
+                <Grid item className={classes.editor}>
+                  <Editor
+                    placeholder="CSV"
+                    value={csv}
+                    onChange={(newCsv) => {
+                      setCsv(newCsv);
+                    }}
+                    style={{ borderRadius: "5px" }}
+                  />
+                </Grid>
 
-            <Grid item style={{ marginTop: 16 }}>
-              <Toolbar
-                value={csv}
-                extension=".csv"
-                filenameWhenDownloading="output.csv"
-                onClear={() => {
-                  setCsv("");
-                }}
-                onReadFile={(text) => {
-                  const newText = text.replace(/\r/g, ""); // Removes file end-line
-                  setCsv(newText);
-                }}
-              />
+                <Grid item style={{ marginTop: 16 }}>
+                  <Toolbar
+                    value={csv}
+                    extension=".csv"
+                    filenameWhenDownloading="output.csv"
+                    onClear={() => {
+                      setCsv("");
+                    }}
+                    onReadFile={(text) => {
+                      const newText = text.replace(/\r/g, ""); // Removes file end-line
+                      setCsv(newText);
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
